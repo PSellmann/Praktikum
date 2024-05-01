@@ -6,10 +6,12 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import com.example.praktikum.viewModels.AccelerometerViewModel
 
 object AccelerometerSensor {
     var sensorManager: SensorManager? = null
     var sensorEventListener: SensorEventListener? = null
+    var viewModel: AccelerometerViewModel? = null
 
 
     fun startListening(ctx: Context) {
@@ -23,9 +25,9 @@ object AccelerometerSensor {
                 }
                 override fun onSensorChanged(event: SensorEvent) {
                     if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                        //accX.value = event.values[0]
-                        //accY.value = event.values[1]
-                        //accZ.value = event.values[2]
+                        viewModel?.posX = event.values[0]
+                        viewModel?.posY = event.values[1]
+                        viewModel?.posZ = event.values[2]
                         Log.d("Acc", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
                     }
                 }

@@ -23,7 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.praktikum.sensors.AccelerometerSensor
+import com.example.praktikum.viewModels.AccelerometerViewModel
 
 @Composable
 fun Settings(modifier: Modifier = Modifier) {
@@ -38,7 +40,10 @@ fun Settings(modifier: Modifier = Modifier) {
 @Composable
 fun AccelerometerCard(sensorName: String, modifier: Modifier = Modifier) {
     var ctx = LocalContext.current
-    var checked by rememberSaveable { mutableStateOf(false) }
+
+    var viewModel = viewModel<AccelerometerViewModel>()
+    AccelerometerSensor.viewModel = viewModel
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -53,11 +58,11 @@ fun AccelerometerCard(sensorName: String, modifier: Modifier = Modifier) {
                 Text(text = sensorName)
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(
-                    checked = checked,
+                    checked = viewModel.checked,
                     onCheckedChange = {
-                        checked = !checked
+                        viewModel.checked = !viewModel.checked
 
-                        if(checked) {
+                        if(viewModel.checked) {
                             AccelerometerSensor.startListening(ctx)
                         } else {
                             AccelerometerSensor.stopListening()
@@ -66,17 +71,17 @@ fun AccelerometerCard(sensorName: String, modifier: Modifier = Modifier) {
                 )
             }
 
-            if(checked) {
+            if(viewModel.checked) {
                 Text(
-                    text = "X-Koordinate:",
+                    text = "X-Koordinate: ${viewModel.posX}",
                     modifier = Modifier.padding(10.dp)
                 )
                 Text(
-                    text = "Y-Koordinate:",
+                    text = "Y-Koordinate: ${viewModel.posY}",
                     modifier = Modifier.padding(10.dp)
                 )
                 Text(
-                    text = "Z-Koordinate:",
+                    text = "Z-Koordinate: ${viewModel.posZ}",
                     modifier = Modifier.padding(10.dp)
                 )
             }
