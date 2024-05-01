@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.praktikum.sensors.AccelerometerSensor
 import com.example.praktikum.sensors.GyroscopeSensor
@@ -147,4 +148,9 @@ fun GyroscopeCard(sensorName: String, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+fun SaveDataButton(modifier: Modifier = Modifier) {
+    // Not implemented yet
 }

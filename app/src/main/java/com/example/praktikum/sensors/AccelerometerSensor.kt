@@ -6,6 +6,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import com.example.praktikum.data.AccelerometerMeasuringPoint
+import com.example.praktikum.data.SensorData
 import com.example.praktikum.viewModels.AccelerometerViewModel
 
 object AccelerometerSensor {
@@ -28,7 +30,14 @@ object AccelerometerSensor {
                         viewModel?.posX = event.values[0]
                         viewModel?.posY = event.values[1]
                         viewModel?.posZ = event.values[2]
-                        Log.d("Acc", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
+
+                        SensorData.accelerometerDataList.add(AccelerometerMeasuringPoint(
+                            event.values[0],
+                            event.values[1],
+                            event.values[2]
+                        ))
+
+                        //Log.d("Acc", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
                     }
                 }
             }
@@ -42,5 +51,6 @@ object AccelerometerSensor {
         this.sensorManager?.unregisterListener(this.sensorEventListener)
         this.sensorEventListener = null
         this.sensorManager = null
+        SensorData.accelerometerDataList.clear()
     }
 }
