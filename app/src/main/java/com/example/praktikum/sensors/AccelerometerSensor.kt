@@ -9,14 +9,15 @@ import android.util.Log
 import com.example.praktikum.data.AccelerometerMeasuringPoint
 import com.example.praktikum.data.SensorData
 import com.example.praktikum.viewModels.AccelerometerViewModel
+import com.example.praktikum.viewModels.SensorViewModel
 
-object AccelerometerSensor {
+object AccelerometerSensor: AbstractSensor() {
     var sensorManager: SensorManager? = null
     var sensorEventListener: SensorEventListener? = null
-    var viewModel: AccelerometerViewModel? = null
+    var viewModel: SensorViewModel? = null
 
 
-    fun startListening(ctx: Context) {
+    override fun startListening(ctx: Context) {
         if(this.sensorManager == null) {
             this.sensorManager = ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         }
@@ -27,9 +28,9 @@ object AccelerometerSensor {
                 }
                 override fun onSensorChanged(event: SensorEvent) {
                     if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                        viewModel?.posX = event.values[0]
-                        viewModel?.posY = event.values[1]
-                        viewModel?.posZ = event.values[2]
+                        viewModel?.positionStates?.getOrNull(0)?.value = event.values[0]
+                        viewModel?.positionStates?.getOrNull(1)?.value = event.values[1]
+                        viewModel?.positionStates?.getOrNull(2)?.value = event.values[2]
 
                         SensorData.accelerometerDataList.add(AccelerometerMeasuringPoint(
                             event.values[0],
@@ -47,7 +48,7 @@ object AccelerometerSensor {
             this.sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL)
     }
 
-    fun stopListening() {
+    override fun stopListening() {
         this.sensorManager?.unregisterListener(this.sensorEventListener)
         this.sensorEventListener = null
         this.sensorManager = null
