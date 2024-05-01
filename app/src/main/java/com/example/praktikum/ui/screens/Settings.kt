@@ -25,7 +25,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.praktikum.sensors.AccelerometerSensor
+import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.viewModels.AccelerometerViewModel
+import com.example.praktikum.viewModels.GyroscopeViewModel
 
 @Composable
 fun Settings(modifier: Modifier = Modifier) {
@@ -35,8 +37,14 @@ fun Settings(modifier: Modifier = Modifier) {
             .fillMaxSize()
     ) {
         AccelerometerCard(sensorName = "Acclereometer")
+        GyroscopeCard(sensorName = "Gyroscope")
     }
 }
+
+/* Die Composables für die Sensoren sollen in einem
+* Refactoring nochmal überarbeitet werden um redundanten code
+* zu vermeiden */
+
 @Composable
 fun AccelerometerCard(sensorName: String, modifier: Modifier = Modifier) {
     var ctx = LocalContext.current
@@ -66,6 +74,58 @@ fun AccelerometerCard(sensorName: String, modifier: Modifier = Modifier) {
                             AccelerometerSensor.startListening(ctx)
                         } else {
                             AccelerometerSensor.stopListening()
+                        }
+                    }
+                )
+            }
+
+            if(viewModel.checked) {
+                Text(
+                    text = "X-Koordinate: ${viewModel.posX}",
+                    modifier = Modifier.padding(10.dp)
+                )
+                Text(
+                    text = "Y-Koordinate: ${viewModel.posY}",
+                    modifier = Modifier.padding(10.dp)
+                )
+                Text(
+                    text = "Z-Koordinate: ${viewModel.posZ}",
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun GyroscopeCard(sensorName: String, modifier: Modifier = Modifier) {
+    var ctx = LocalContext.current
+
+    var viewModel = viewModel<GyroscopeViewModel>()
+    GyroscopeSensor.viewModel = viewModel
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+            .background(color = Color.LightGray, shape = RoundedCornerShape(8.dp))
+    ) {
+        Column {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Text(text = sensorName)
+                Spacer(modifier = Modifier.weight(1f))
+                Switch(
+                    checked = viewModel.checked,
+                    onCheckedChange = {
+                        viewModel.checked = !viewModel.checked
+
+                        if(viewModel.checked) {
+                            GyroscopeSensor.startListening(ctx)
+                        } else {
+                            GyroscopeSensor.stopListening()
                         }
                     }
                 )
