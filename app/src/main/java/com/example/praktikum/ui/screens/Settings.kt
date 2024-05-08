@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -45,6 +46,7 @@ import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.viewModels.AccelerometerViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
 import com.example.praktikum.viewModels.SensorViewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun Settings(modifier: Modifier = Modifier) {
@@ -108,13 +110,44 @@ fun SensorCard(
                         viewModel.checked.value = !viewModel.checked.value
 
                         if(viewModel.checked.value) {
-                            sensor.startListening(ctx)
+                            sensor.startListening(ctx, viewModel.samplingRate.value.toInt())
                         } else {
                             sensor.stopListening()
                         }
                     }
                 )
             }
+
+            Slider(
+                value = viewModel.samplingRate.value,
+                onValueChange = {
+                    viewModel.samplingRate.value = it
+                },
+                valueRange = 0f..3f,
+                steps = 2,
+                enabled = !viewModel.checked.value,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            val samplingRateText = when (viewModel.samplingRate.value) {
+                0.0F -> "SENSOR_DELAY_FASTEST"
+                1.0F -> "SENSOR_DELAY_GAME"
+                2.0F -> "SENSOR_DELAY_UI"
+                3.0F -> "SENSOR_DELAY_NORMAL"
+                else -> "Unbekannte Sampling-Rate"
+            }
+
+            Text(
+                text = samplingRateText,
+                color = Color.White,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            )
+
+
 
             if(viewModel.checked.value) {
                 viewModel.positionStates.forEachIndexed { index, state ->

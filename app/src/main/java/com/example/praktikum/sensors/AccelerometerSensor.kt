@@ -17,7 +17,7 @@ object AccelerometerSensor: AbstractSensor() {
     var viewModel: SensorViewModel? = null
 
 
-    override fun startListening(ctx: Context) {
+    override fun startListening(ctx: Context, samplingRate: Int) {
         if(this.sensorManager == null) {
             this.sensorManager = ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         }
@@ -48,7 +48,7 @@ object AccelerometerSensor: AbstractSensor() {
         }
 
         this.sensorManager!!.registerListener(this.sensorEventListener,
-            this.sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL)
+            this.sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),samplingRate)
     }
 
     override fun stopListening() {
