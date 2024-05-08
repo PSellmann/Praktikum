@@ -6,6 +6,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import com.example.praktikum.data.GyroscopeMeasuringPoint
+import com.example.praktikum.data.SensorData
 import com.example.praktikum.viewModels.SensorViewModel
 
 object GyroscopeSensor: AbstractSensor() {
@@ -28,6 +30,15 @@ object GyroscopeSensor: AbstractSensor() {
                         viewModel?.positionStates?.getOrNull(0)?.value = event.values[0]
                         viewModel?.positionStates?.getOrNull(1)?.value = event.values[1]
                         viewModel?.positionStates?.getOrNull(2)?.value = event.values[2]
+
+                        SensorData.gyroscopeDataList.add(
+                            GyroscopeMeasuringPoint(
+                                System.currentTimeMillis(),
+                                event.values[0],
+                                event.values[1],
+                                event.values[2]
+                            )
+                        )
                         //Log.d("Gyr", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
                     }
                 }
@@ -40,6 +51,7 @@ object GyroscopeSensor: AbstractSensor() {
 
     override fun stopListening() {
         this.sensorManager?.unregisterListener(this.sensorEventListener)
+        SensorData.gyroscopeDataList.clear()
         this.sensorEventListener = null
         this.sensorManager = null
     }

@@ -32,11 +32,14 @@ object AccelerometerSensor: AbstractSensor() {
                         viewModel?.positionStates?.getOrNull(1)?.value = event.values[1]
                         viewModel?.positionStates?.getOrNull(2)?.value = event.values[2]
 
-                        SensorData.accelerometerDataList.add(AccelerometerMeasuringPoint(
-                            event.values[0],
-                            event.values[1],
-                            event.values[2]
-                        ))
+                        SensorData.accelerometerDataList.add(
+                            AccelerometerMeasuringPoint(
+                                System.currentTimeMillis(),
+                                event.values[0],
+                                event.values[1],
+                                event.values[2]
+                            )
+                        )
 
                         //Log.d("Acc", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
                     }

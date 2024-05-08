@@ -1,6 +1,6 @@
 package com.example.praktikum.data
 
-data class AccelerometerMeasuringPoint(
+data class GyroscopeMeasuringPoint(
     var timestamp: Long,
     var posX: Float,
     var posY: Float,

@@ -6,5 +6,6 @@ import com.example.praktikum.viewModels.SensorViewModel
 data class SensorInfo(
     val name: String,
     val viewModel: SensorViewModel,
-    val sensor: AbstractSensor
+    val sensor: AbstractSensor,
+    val dataList: List<Any>
 )

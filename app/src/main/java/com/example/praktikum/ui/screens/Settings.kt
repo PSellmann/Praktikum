@@ -1,6 +1,7 @@
 package com.example.praktikum.ui.screens
 
 import android.hardware.Sensor
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,25 +14,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.praktikum.data.SensorData
 import com.example.praktikum.data.SensorInfo
+import com.example.praktikum.data.saveToFileInDownloadsDirectory
 import com.example.praktikum.sensors.AbstractSensor
 import com.example.praktikum.sensors.AccelerometerSensor
 import com.example.praktikum.sensors.GyroscopeSensor
@@ -48,8 +55,8 @@ fun Settings(modifier: Modifier = Modifier) {
     GyroscopeSensor.viewModel = gyroscopeViewModel
 
     val sensors = listOf(
-        SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor),
-        SensorInfo("Gyroscope", gyroscopeViewModel, GyroscopeSensor)
+        SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor, SensorData.accelerometerDataList),
+        SensorInfo("Gyroscope", gyroscopeViewModel, GyroscopeSensor, SensorData.gyroscopeDataList)
     )
 
     LazyColumn(
@@ -60,7 +67,8 @@ fun Settings(modifier: Modifier = Modifier) {
             SensorCard(
                 sensorName = sensorInfo.name,
                 viewModel = sensorInfo.viewModel,
-                sensor = sensorInfo.sensor
+                sensor = sensorInfo.sensor,
+                dataList = sensorInfo.dataList
             )
         }
     }
@@ -72,6 +80,7 @@ fun SensorCard(
     sensorName: String,
     viewModel: SensorViewModel,
     sensor: AbstractSensor,
+    dataList: List<Any>,
     modifier: Modifier = Modifier
 ) {
     var ctx = LocalContext.current
@@ -127,6 +136,7 @@ fun SensorCard(
 
                 SaveDataButton(
                     viewModel,
+                    dataList,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -135,13 +145,30 @@ fun SensorCard(
 }
 
 @Composable
-fun SaveDataButton(viewModel: SensorViewModel, modifier: Modifier = Modifier) {
+fun SaveDataButton(viewModel: SensorViewModel, sensorData: List<Any>, modifier: Modifier = Modifier) {
+    val ctx = LocalContext.current
+    val showDialog = remember { mutableStateOf(false) }
+    val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
+
+    if (showDialog.value) {
+        PopupWithTextField(
+            onDismiss = {
+                showDialog.value = false
+            },
+            onTextSubmitted = {
+                Log.d("Dateiname", it)
+                showDialog.value = false
+                viewModel.checked.value = false
+                saveToFileInDownloadsDirectory(ctx, it + ".txt", sensorData)
+            }
+        )
+    }
+
     Button(
         onClick = {
-            viewModel.checked.value = false
+            showDialog.value = true
         },
-        modifier = modifier
-            .padding(20.dp)
+        modifier = modifier.padding(20.dp)
     ) {
         Text(
             text = "Speichern",
@@ -149,4 +176,47 @@ fun SaveDataButton(viewModel: SensorViewModel, modifier: Modifier = Modifier) {
             fontSize = 20.sp
         )
     }
+}
+
+@Composable
+fun PopupWithTextField(
+    onDismiss: () -> Unit,
+    onTextSubmitted: (String) -> Unit
+) {
+    var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text("Dateiname eingeben") },
+        text = {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TextField(
+                    value = textFieldValue,
+                    onValueChange = { textFieldValue = it },
+                    label = { Text("Dateiname") },
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onTextSubmitted(textFieldValue.text)
+                    onDismiss()
+                }
+            ) {
+                Text("Speichern")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = { onDismiss() }
+            ) {
+                Text("Abbrechen")
+            }
+        }
+    )
 }
