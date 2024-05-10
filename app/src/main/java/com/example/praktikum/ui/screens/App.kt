@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -16,14 +17,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.praktikum.sensors.AccelerometerSensor
+import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.ui.navigation.listOfNavItems
 import com.example.praktikum.ui.screens.Screens
 import com.example.praktikum.ui.screens.Settings
 import com.example.praktikum.ui.screens.Home
+import com.example.praktikum.viewModels.AccelerometerViewModel
+import com.example.praktikum.viewModels.GyroscopeViewModel
 
 @Composable
 fun App() {
     var navController: NavHostController = rememberNavController()
+
+    val accelerometerViewModel = viewModel<AccelerometerViewModel>()
+    AccelerometerSensor.viewModel = accelerometerViewModel
+
+    val gyroscopeViewModel = viewModel<GyroscopeViewModel>()
+    GyroscopeSensor.viewModel = gyroscopeViewModel
 
     Scaffold(
         bottomBar = {
@@ -65,7 +76,10 @@ fun App() {
             }
 
             composable(route = Screens.Settings.name) {
-                Settings()
+                Settings(
+                    accelerometerViewModel = accelerometerViewModel,
+                    gyroscopeViewModel = gyroscopeViewModel
+                )
             }
         }
     }

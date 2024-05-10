@@ -49,12 +49,11 @@ import com.example.praktikum.viewModels.SensorViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun Settings(modifier: Modifier = Modifier) {
-    val accelerometerViewModel = viewModel<AccelerometerViewModel>()
-    AccelerometerSensor.viewModel = accelerometerViewModel
-
-    val gyroscopeViewModel = viewModel<GyroscopeViewModel>()
-    GyroscopeSensor.viewModel = gyroscopeViewModel
+fun Settings(
+    accelerometerViewModel: SensorViewModel,
+    gyroscopeViewModel : SensorViewModel,
+    modifier: Modifier = Modifier
+) {
 
     val sensors = listOf(
         SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor, SensorData.accelerometerDataList),
