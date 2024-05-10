@@ -1,6 +1,7 @@
 package com.example.praktikum.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,5 +23,10 @@ val listOfNavItems: List<NavItem> = listOf(
         label = "Settings",
         icon = Icons.Default.Settings,
         route = Screens.Settings.name
+    ),
+    NavItem(
+        label = "LiveData",
+        icon = Icons.Default.Check,
+        route = Screens.LiveDataScreen.name
     )
 )

@@ -40,7 +40,6 @@ object AccelerometerSensor: AbstractSensor() {
                                 event.values[2]
                             )
                         )
-
                         //Log.d("Acc", "${event.values[0]} ${event.values[1]} ${event.values[2]}")
                     }
                 }
