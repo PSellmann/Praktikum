@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.praktikum.sensors.AccelerometerSensor
 import com.example.praktikum.sensors.GyroscopeSensor
+import com.example.praktikum.sensors.MagneticFieldSensor
 import com.example.praktikum.ui.navigation.listOfNavItems
 import com.example.praktikum.ui.screens.Screens
 import com.example.praktikum.ui.screens.Settings
@@ -26,6 +27,7 @@ import com.example.praktikum.ui.screens.Home
 import com.example.praktikum.ui.screens.LiveDataScreen
 import com.example.praktikum.viewModels.AccelerometerViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
+import com.example.praktikum.viewModels.MagneticFieldViewModel
 
 @Composable
 fun App() {
@@ -36,6 +38,9 @@ fun App() {
 
     val gyroscopeViewModel = viewModel<GyroscopeViewModel>()
     GyroscopeSensor.viewModel = gyroscopeViewModel
+
+    val magneticFieldViewModel = viewModel<MagneticFieldViewModel>()
+    MagneticFieldSensor.viewModel = magneticFieldViewModel
 
     Scaffold(
         bottomBar = {
@@ -79,14 +84,16 @@ fun App() {
             composable(route = Screens.Settings.name) {
                 Settings(
                     accelerometerViewModel = accelerometerViewModel,
-                    gyroscopeViewModel = gyroscopeViewModel
+                    gyroscopeViewModel = gyroscopeViewModel,
+                    magneticFieldViewModel = magneticFieldViewModel
                 )
             }
 
             composable(route = Screens.LiveDataScreen.name) {
                 LiveDataScreen(
                     accelerometerViewModel = accelerometerViewModel,
-                    gyroscopeViewModel = gyroscopeViewModel
+                    gyroscopeViewModel = gyroscopeViewModel,
+                    magneticFieldViewModel = magneticFieldViewModel
                 )
             }
         }

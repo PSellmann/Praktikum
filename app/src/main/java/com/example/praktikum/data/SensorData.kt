@@ -2,6 +2,7 @@ package com.example.praktikum.data
 
 import android.content.Context
 import android.os.Environment
+import com.example.praktikum.sensors.MagneticFieldSensor
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
@@ -11,6 +12,7 @@ import java.io.OutputStreamWriter
 object SensorData {
     var accelerometerDataList: MutableList<AccelerometerMeasuringPoint> = mutableListOf()
     var gyroscopeDataList: MutableList<GyroscopeMeasuringPoint> = mutableListOf()
+    var magneticFieldDataList: MutableList<MagneticFieldMeasuringPoint> = mutableListOf()
 }
 
 fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorData: List<Any> ): Boolean {
@@ -30,6 +32,7 @@ fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorDat
                 val line = when (data) {
                     is AccelerometerMeasuringPoint -> data.toFormattedString()
                     is GyroscopeMeasuringPoint -> data.toFormattedString()
+                    is MagneticFieldMeasuringPoint -> data.toFormattedString()
                     else -> {
                         "Unbekannteer Datentyp: $data"
                     }

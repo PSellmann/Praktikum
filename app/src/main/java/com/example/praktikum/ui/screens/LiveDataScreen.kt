@@ -21,17 +21,20 @@ import androidx.compose.ui.unit.sp
 import com.example.praktikum.data.SensorDataDisplayInfo
 import com.example.praktikum.viewModels.AccelerometerViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
+import com.example.praktikum.viewModels.MagneticFieldViewModel
 import com.example.praktikum.viewModels.SensorViewModel
 
 @Composable
 fun LiveDataScreen(
     accelerometerViewModel: AccelerometerViewModel,
     gyroscopeViewModel: GyroscopeViewModel,
+    magneticFieldViewModel: MagneticFieldViewModel,
     modifier: Modifier = Modifier
 ) {
     val sensorInfo = mutableListOf(
         SensorDataDisplayInfo("Accelerometer", accelerometerViewModel),
-        SensorDataDisplayInfo("Gyroscope", gyroscopeViewModel)
+        SensorDataDisplayInfo("Gyroscope", gyroscopeViewModel),
+        SensorDataDisplayInfo("Magnetic Field", magneticFieldViewModel)
     )
 
     LazyColumn(
