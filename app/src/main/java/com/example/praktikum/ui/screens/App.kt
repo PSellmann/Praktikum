@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.praktikum.sensors.AccelerometerSensor
 import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.sensors.MagneticFieldSensor
+import com.example.praktikum.sensors.SensorFusionSensor
 import com.example.praktikum.ui.navigation.listOfNavItems
 import com.example.praktikum.ui.screens.Screens
 import com.example.praktikum.ui.screens.Settings
@@ -28,6 +29,7 @@ import com.example.praktikum.ui.screens.LiveDataScreen
 import com.example.praktikum.viewModels.AccelerometerViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
 import com.example.praktikum.viewModels.MagneticFieldViewModel
+import com.example.praktikum.viewModels.SensorFusionViewModel
 
 @Composable
 fun App() {
@@ -41,6 +43,9 @@ fun App() {
 
     val magneticFieldViewModel = viewModel<MagneticFieldViewModel>()
     MagneticFieldSensor.viewModel = magneticFieldViewModel
+
+    val sensorFusionViewModel = viewModel<SensorFusionViewModel>()
+    SensorFusionSensor.viewModel = sensorFusionViewModel
 
     Scaffold(
         bottomBar = {
@@ -85,7 +90,8 @@ fun App() {
                 Settings(
                     accelerometerViewModel = accelerometerViewModel,
                     gyroscopeViewModel = gyroscopeViewModel,
-                    magneticFieldViewModel = magneticFieldViewModel
+                    magneticFieldViewModel = magneticFieldViewModel,
+                    sensorFusionViewModel = sensorFusionViewModel
                 )
             }
 
@@ -93,7 +99,8 @@ fun App() {
                 LiveDataScreen(
                     accelerometerViewModel = accelerometerViewModel,
                     gyroscopeViewModel = gyroscopeViewModel,
-                    magneticFieldViewModel = magneticFieldViewModel
+                    magneticFieldViewModel = magneticFieldViewModel,
+                    sensorFusionViewModel = sensorFusionViewModel
                 )
             }
         }

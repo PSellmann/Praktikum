@@ -40,6 +40,7 @@ import com.example.praktikum.sensors.AbstractSensor
 import com.example.praktikum.sensors.AccelerometerSensor
 import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.sensors.MagneticFieldSensor
+import com.example.praktikum.sensors.SensorFusionSensor
 import com.example.praktikum.viewModels.SensorViewModel
 
 @Composable
@@ -47,13 +48,15 @@ fun Settings(
     accelerometerViewModel: SensorViewModel,
     gyroscopeViewModel : SensorViewModel,
     magneticFieldViewModel: SensorViewModel,
+    sensorFusionViewModel: SensorViewModel,
     modifier: Modifier = Modifier
 ) {
 
     val sensors = listOf(
         SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor, SensorData.accelerometerDataList),
         SensorInfo("Gyroscope", gyroscopeViewModel, GyroscopeSensor, SensorData.gyroscopeDataList),
-        SensorInfo("MagneticField", magneticFieldViewModel, MagneticFieldSensor, SensorData.magneticFieldDataList)
+        SensorInfo("MagneticField", magneticFieldViewModel, MagneticFieldSensor, SensorData.magneticFieldDataList),
+        SensorInfo("SensorFusion", sensorFusionViewModel, SensorFusionSensor, SensorData.sensorFusionDataList)
     )
 
     LazyColumn(

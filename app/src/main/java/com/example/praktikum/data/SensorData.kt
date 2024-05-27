@@ -13,6 +13,7 @@ object SensorData {
     var accelerometerDataList: MutableList<AccelerometerMeasuringPoint> = mutableListOf()
     var gyroscopeDataList: MutableList<GyroscopeMeasuringPoint> = mutableListOf()
     var magneticFieldDataList: MutableList<MagneticFieldMeasuringPoint> = mutableListOf()
+    var sensorFusionDataList: MutableList<SensorFusionMeasuringPoint> = mutableListOf()
 }
 
 fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorData: List<Any> ): Boolean {
@@ -33,6 +34,7 @@ fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorDat
                     is AccelerometerMeasuringPoint -> data.toFormattedString()
                     is GyroscopeMeasuringPoint -> data.toFormattedString()
                     is MagneticFieldMeasuringPoint -> data.toFormattedString()
+                    is SensorFusionMeasuringPoint -> data.toFormattedString()
                     else -> {
                         "Unbekannteer Datentyp: $data"
                     }
