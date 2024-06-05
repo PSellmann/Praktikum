@@ -83,6 +83,7 @@ fun SensorCard(
     dataList: List<Any>,
     modifier: Modifier = Modifier
 ) {
+    val showDialog = remember { mutableStateOf(false) }
     var ctx = LocalContext.current
 
     Box(
@@ -109,7 +110,7 @@ fun SensorCard(
                         if(viewModel.checked.value) {
                             sensor.startListening(ctx, viewModel.samplingRate.value.toInt())
                         } else {
-                            sensor.stopListening()
+                            showDialog.value = true
                         }
                     }
                 )
@@ -144,48 +145,20 @@ fun SensorCard(
                     .fillMaxWidth()
             )
 
-            if(viewModel.checked.value) {
-                SaveDataButton(
-                    viewModel,
-                    dataList,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+            if (showDialog.value) {
+                val list = dataList.toList() //List Kopieren
+                sensor.stopListening()
+                PopupWithTextField(
+                    onDismiss = {
+                        showDialog.value = false
+                    },
+                    onTextSubmitted = {
+                        showDialog.value = false
+                        saveToFileInDownloadsDirectory(ctx, it + ".txt", list)
+                    }
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SaveDataButton(viewModel: SensorViewModel, sensorData: List<Any>, modifier: Modifier = Modifier) {
-    val ctx = LocalContext.current
-    val showDialog = remember { mutableStateOf(false) }
-    val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
-
-    if (showDialog.value) {
-        PopupWithTextField(
-            onDismiss = {
-                showDialog.value = false
-            },
-            onTextSubmitted = {
-                Log.d("Dateiname", it)
-                showDialog.value = false
-                viewModel.checked.value = false
-                saveToFileInDownloadsDirectory(ctx, it + ".txt", sensorData)
-            }
-        )
-    }
-
-    Button(
-        onClick = {
-            showDialog.value = true
-        },
-        modifier = modifier.padding(20.dp)
-    ) {
-        Text(
-            text = "Speichern",
-            color = Color.White,
-            fontSize = 20.sp
-        )
     }
 }
 
