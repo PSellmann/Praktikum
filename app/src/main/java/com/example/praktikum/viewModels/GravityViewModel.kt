@@ -2,14 +2,8 @@ package com.example.praktikum.viewModels
 
 import androidx.compose.runtime.mutableStateOf
 
-class SensorFusionViewModel: SensorViewModel() {
+class GravityViewModel: SensorViewModel() {
     override var positionStates = mutableListOf(
-        mutableStateOf(0.0F),
-        mutableStateOf(0.0F),
-        mutableStateOf(0.0F),
-        mutableStateOf(0.0F),
-        mutableStateOf(0.0F),
-        mutableStateOf(0.0F),
         mutableStateOf(0.0F),
         mutableStateOf(0.0F),
         mutableStateOf(0.0F),

@@ -7,9 +7,12 @@ data class SensorFusionMeasuringPoint(
     var posZAcc: Float,
     var posXGyr: Float,
     var posYGyr: Float,
-    var posZGyr: Float
+    var posZGyr: Float,
+    var posXGrav: Float,
+    var posYGrav: Float,
+    var posZGrav: Float
 ) {
     fun toFormattedString(): String {
-        return "$timestamp,$posXAcc,$posYAcc,$posZAcc,$posXGyr,$posYGyr,$posZGyr"
+        return "$timestamp,$posXAcc,$posYAcc,$posZAcc,$posXGyr,$posYGyr,$posZGyr, $posXGrav,$posYGrav,$posZGrav"
     }
 }

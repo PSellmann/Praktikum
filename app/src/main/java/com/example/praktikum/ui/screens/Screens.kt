@@ -3,5 +3,6 @@ package com.example.praktikum.ui.screens
 enum class Screens {
     Home,
     Settings,
-    LiveDataScreen
+    LiveDataScreen,
+    HAR_TMD,
 }

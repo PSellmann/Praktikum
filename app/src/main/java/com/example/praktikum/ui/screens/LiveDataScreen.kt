@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.praktikum.data.SensorData
 import com.example.praktikum.data.SensorDataDisplayInfo
 import com.example.praktikum.viewModels.AccelerometerViewModel
+import com.example.praktikum.viewModels.GravityViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
 import com.example.praktikum.viewModels.MagneticFieldViewModel
 import com.example.praktikum.viewModels.SensorFusionViewModel
@@ -32,13 +33,15 @@ fun LiveDataScreen(
     gyroscopeViewModel: GyroscopeViewModel,
     magneticFieldViewModel: MagneticFieldViewModel,
     sensorFusionViewModel: SensorFusionViewModel,
+    gravityViewModel: GravityViewModel,
     modifier: Modifier = Modifier
 ) {
     val sensorInfo = mutableListOf(
+        SensorDataDisplayInfo("Sensor Fusion", sensorFusionViewModel),
         SensorDataDisplayInfo("Accelerometer", accelerometerViewModel),
         SensorDataDisplayInfo("Gyroscope", gyroscopeViewModel),
         SensorDataDisplayInfo("Magnetic Field", magneticFieldViewModel),
-        SensorDataDisplayInfo("Sensor Fusion", sensorFusionViewModel)
+        SensorDataDisplayInfo("Gravity", gravityViewModel),
     )
 
     LazyColumn(
@@ -141,6 +144,28 @@ fun TextData(
             )
             Text(
                 text = "Z-Koordinate:" + viewModel.positionStates[5].value.toString(),
+                fontSize = 18.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Text(
+                text = "X-Koordinate:" + viewModel.positionStates[6].value.toString(),
+                fontSize = 18.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Y-Koordinate:" + viewModel.positionStates[7].value.toString(),
+                fontSize = 18.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Z-Koordinate:" + viewModel.positionStates[8].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,

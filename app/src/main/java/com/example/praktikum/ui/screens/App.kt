@@ -18,15 +18,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.praktikum.sensors.AccelerometerSensor
+import com.example.praktikum.sensors.GravitySensor
 import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.sensors.MagneticFieldSensor
 import com.example.praktikum.sensors.SensorFusionSensor
 import com.example.praktikum.ui.navigation.listOfNavItems
+import com.example.praktikum.ui.screens.HAR_TMD
 import com.example.praktikum.ui.screens.Screens
 import com.example.praktikum.ui.screens.Settings
 import com.example.praktikum.ui.screens.Home
 import com.example.praktikum.ui.screens.LiveDataScreen
 import com.example.praktikum.viewModels.AccelerometerViewModel
+import com.example.praktikum.viewModels.GravityViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
 import com.example.praktikum.viewModels.MagneticFieldViewModel
 import com.example.praktikum.viewModels.SensorFusionViewModel
@@ -46,6 +49,9 @@ fun App() {
 
     val sensorFusionViewModel = viewModel<SensorFusionViewModel>()
     SensorFusionSensor.viewModel = sensorFusionViewModel
+
+    val gravityViewModel = viewModel<GravityViewModel>()
+    GravitySensor.viewModel = gravityViewModel
 
     Scaffold(
         bottomBar = {
@@ -91,7 +97,8 @@ fun App() {
                     accelerometerViewModel = accelerometerViewModel,
                     gyroscopeViewModel = gyroscopeViewModel,
                     magneticFieldViewModel = magneticFieldViewModel,
-                    sensorFusionViewModel = sensorFusionViewModel
+                    sensorFusionViewModel = sensorFusionViewModel,
+                    gravityViewModel = gravityViewModel
                 )
             }
 
@@ -100,6 +107,13 @@ fun App() {
                     accelerometerViewModel = accelerometerViewModel,
                     gyroscopeViewModel = gyroscopeViewModel,
                     magneticFieldViewModel = magneticFieldViewModel,
+                    sensorFusionViewModel = sensorFusionViewModel,
+                    gravityViewModel
+                )
+            }
+
+            composable(route = Screens.HAR_TMD.name) {
+                HAR_TMD(
                     sensorFusionViewModel = sensorFusionViewModel
                 )
             }
