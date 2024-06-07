@@ -38,10 +38,10 @@ fun LiveDataScreen(
 ) {
     val sensorInfo = mutableListOf(
         SensorDataDisplayInfo("Sensor Fusion", sensorFusionViewModel),
-        SensorDataDisplayInfo("Accelerometer", accelerometerViewModel),
-        SensorDataDisplayInfo("Gyroscope", gyroscopeViewModel),
-        SensorDataDisplayInfo("Magnetic Field", magneticFieldViewModel),
-        SensorDataDisplayInfo("Gravity", gravityViewModel),
+        //SensorDataDisplayInfo("Accelerometer", accelerometerViewModel),
+        //SensorDataDisplayInfo("Gyroscope", gyroscopeViewModel),
+        //SensorDataDisplayInfo("Magnetic Field", magneticFieldViewModel),
+        //SensorDataDisplayInfo("Gravity", gravityViewModel),
     )
 
     LazyColumn(
@@ -106,21 +106,23 @@ fun TextData(
         modifier = modifier
     ) {
         Text(
-            text = "X-Koordinate:" + viewModel.positionStates[0].value.toString(),
+            text = "X:" + viewModel.positionStates[0].value.toString(),
             fontSize = 18.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.padding(bottom = 10.dp))
         Text(
-            text = "Y-Koordinate:" + viewModel.positionStates[1].value.toString(),
+            text = "Y:" + viewModel.positionStates[1].value.toString(),
             fontSize = 18.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.padding(bottom = 10.dp))
         Text(
-            text = "Z-Koordinate:" + viewModel.positionStates[2].value.toString(),
+            text = "Z:" + viewModel.positionStates[2].value.toString(),
             fontSize = 18.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
@@ -128,44 +130,49 @@ fun TextData(
         )
 
         if(viewModel is SensorFusionViewModel) {
+            Spacer(modifier = Modifier.padding(bottom = 30.dp))
             Text(
-                text = "X-Koordinate:" + viewModel.positionStates[3].value.toString(),
+                text = "X:" + viewModel.positionStates[3].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.padding(bottom = 10.dp))
             Text(
-                text = "Y-Koordinate:" + viewModel.positionStates[4].value.toString(),
+                text = "Y:" + viewModel.positionStates[4].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.padding(bottom = 10.dp))
             Text(
-                text = "Z-Koordinate:" + viewModel.positionStates[5].value.toString(),
+                text = "Z:" + viewModel.positionStates[5].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-
+            Spacer(modifier = Modifier.padding(bottom = 30.dp))
             Text(
-                text = "X-Koordinate:" + viewModel.positionStates[6].value.toString(),
+                text = "X:" + viewModel.positionStates[6].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.padding(bottom = 10.dp))
             Text(
-                text = "Y-Koordinate:" + viewModel.positionStates[7].value.toString(),
+                text = "Y:" + viewModel.positionStates[7].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.padding(bottom = 10.dp))
             Text(
-                text = "Z-Koordinate:" + viewModel.positionStates[8].value.toString(),
+                text = "Z:" + viewModel.positionStates[8].value.toString(),
                 fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,

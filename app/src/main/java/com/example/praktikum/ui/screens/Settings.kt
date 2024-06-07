@@ -57,10 +57,10 @@ fun Settings(
 
     val sensors = listOf(
         SensorInfo("SensorFusion", sensorFusionViewModel, SensorFusionSensor, SensorData.sensorFusionDataList),
-        SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor, SensorData.accelerometerDataList),
-        SensorInfo("Gyroscope", gyroscopeViewModel, GyroscopeSensor, SensorData.gyroscopeDataList),
-        SensorInfo("MagneticField", magneticFieldViewModel, MagneticFieldSensor, SensorData.magneticFieldDataList),
-        SensorInfo("Gravity", gravityViewModel, GravitySensor, SensorData.gravityDataList),
+        //SensorInfo("Accelerometer", accelerometerViewModel, AccelerometerSensor, SensorData.accelerometerDataList),
+        //SensorInfo("Gyroscope", gyroscopeViewModel, GyroscopeSensor, SensorData.gyroscopeDataList),
+        //SensorInfo("MagneticField", magneticFieldViewModel, MagneticFieldSensor, SensorData.magneticFieldDataList),
+        //SensorInfo("Gravity", gravityViewModel, GravitySensor, SensorData.gravityDataList),
     )
 
     LazyColumn(
