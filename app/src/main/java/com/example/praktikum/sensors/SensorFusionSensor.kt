@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.praktikum.data.SensorData
 import com.example.praktikum.data.SensorFusionMeasuringPoint
 import com.example.praktikum.viewModels.SensorViewModel
@@ -14,6 +15,7 @@ object SensorFusionSensor: AbstractSensor() {
     var sensorEventListenerAccelerometer: SensorEventListener? = null
     var sensorEventListenerGyroscope: SensorEventListener? = null
     var sensorEventListenerGravity: SensorEventListener? = null
+    var sensorEventListenerStepCounter: SensorEventListener? = null
     var viewModel: SensorViewModel? = null
 
 
@@ -43,7 +45,8 @@ object SensorFusionSensor: AbstractSensor() {
                                 viewModel!!.positionStates.getOrNull(5)!!.value,
                                 viewModel!!.positionStates.getOrNull(6)!!.value,
                                 viewModel!!.positionStates.getOrNull(7)!!.value,
-                                viewModel!!.positionStates.getOrNull(8)!!.value
+                                viewModel!!.positionStates.getOrNull(8)!!.value,
+                                viewModel!!.positionStates.getOrNull(9  )!!.value,
                             )
                         )
                     }
@@ -79,6 +82,18 @@ object SensorFusionSensor: AbstractSensor() {
             }
         }
 
+        if(this.sensorEventListenerStepCounter == null) {
+            this.sensorEventListenerStepCounter = object : SensorEventListener {
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+                }
+                override fun onSensorChanged(event: SensorEvent) {
+                    if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
+                        viewModel?.positionStates?.getOrNull(9)?.value = event.values[0]
+                    }
+                }
+            }
+        }
+
         this.sensorManager!!.registerListener(this.sensorEventListenerAccelerometer,
             this.sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),samplingRate)
 
@@ -87,15 +102,20 @@ object SensorFusionSensor: AbstractSensor() {
 
         this.sensorManager!!.registerListener(this.sensorEventListenerGravity,
             this.sensorManager!!.getDefaultSensor(Sensor.TYPE_GRAVITY),samplingRate)
+
+        this.sensorManager!!.registerListener(this.sensorEventListenerStepCounter,
+            this.sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),samplingRate)
     }
 
     override fun stopListening() {
         this.sensorManager?.unregisterListener(this.sensorEventListenerAccelerometer)
         this.sensorManager?.unregisterListener(this.sensorEventListenerGyroscope)
         this.sensorManager?.unregisterListener(this.sensorEventListenerGravity)
+        this.sensorManager?.unregisterListener(this.sensorEventListenerStepCounter)
         this.sensorEventListenerAccelerometer = null
         this.sensorEventListenerGyroscope = null
         this.sensorEventListenerGravity = null
+        this.sensorEventListenerStepCounter = null
         this.sensorManager = null
         SensorData.sensorFusionDataList.clear()
     }

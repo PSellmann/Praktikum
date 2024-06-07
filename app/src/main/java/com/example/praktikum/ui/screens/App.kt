@@ -22,6 +22,7 @@ import com.example.praktikum.sensors.GravitySensor
 import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.sensors.MagneticFieldSensor
 import com.example.praktikum.sensors.SensorFusionSensor
+import com.example.praktikum.sensors.StepCounterSensor
 import com.example.praktikum.ui.navigation.listOfNavItems
 import com.example.praktikum.ui.screens.HAR_TMD
 import com.example.praktikum.ui.screens.Screens
@@ -33,6 +34,7 @@ import com.example.praktikum.viewModels.GravityViewModel
 import com.example.praktikum.viewModels.GyroscopeViewModel
 import com.example.praktikum.viewModels.MagneticFieldViewModel
 import com.example.praktikum.viewModels.SensorFusionViewModel
+import com.example.praktikum.viewModels.StepCounterViewModel
 
 @Composable
 fun App() {
@@ -52,6 +54,9 @@ fun App() {
 
     val gravityViewModel = viewModel<GravityViewModel>()
     GravitySensor.viewModel = gravityViewModel
+
+    val stepCounterViewModel = viewModel<StepCounterViewModel>()
+    StepCounterSensor.viewModel = stepCounterViewModel
 
     Scaffold(
         bottomBar = {
@@ -108,7 +113,7 @@ fun App() {
                     gyroscopeViewModel = gyroscopeViewModel,
                     magneticFieldViewModel = magneticFieldViewModel,
                     sensorFusionViewModel = sensorFusionViewModel,
-                    gravityViewModel
+                    gravityViewModel = gravityViewModel,
                 )
             }
 

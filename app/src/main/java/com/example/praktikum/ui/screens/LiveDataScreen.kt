@@ -178,6 +178,14 @@ fun TextData(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.padding(bottom = 30.dp))
+            Text(
+                text = "Steps:" + viewModel.positionStates[9].value.toString(),
+                fontSize = 18.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

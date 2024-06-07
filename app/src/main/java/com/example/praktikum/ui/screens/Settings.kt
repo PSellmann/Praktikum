@@ -43,6 +43,7 @@ import com.example.praktikum.sensors.GyroscopeSensor
 import com.example.praktikum.sensors.MagneticFieldSensor
 import com.example.praktikum.sensors.SensorFusionSensor
 import com.example.praktikum.viewModels.GravityViewModel
+import com.example.praktikum.viewModels.SensorFusionViewModel
 import com.example.praktikum.viewModels.SensorViewModel
 
 @Composable

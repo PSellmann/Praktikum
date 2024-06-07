@@ -15,6 +15,7 @@ object SensorData {
     var magneticFieldDataList: MutableList<MagneticFieldMeasuringPoint> = mutableListOf()
     var sensorFusionDataList: MutableList<SensorFusionMeasuringPoint> = mutableListOf()
     var gravityDataList: MutableList<GravityMeasuringPoint> = mutableListOf()
+    var stepCounterDataList: MutableList<StepCounterMeasuringPoint> = mutableListOf()
 }
 
 fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorData: List<Any> ): Boolean {
@@ -37,6 +38,7 @@ fun saveToFileInDownloadsDirectory(context: Context, fileName: String, sensorDat
                     is MagneticFieldMeasuringPoint -> data.toFormattedString()
                     is SensorFusionMeasuringPoint -> data.toFormattedString()
                     is GravityMeasuringPoint -> data.toFormattedString()
+                    is StepCounterMeasuringPoint -> data.toFormattedString()
                     else -> {
                         "Unbekannteer Datentyp: $data"
                     }
