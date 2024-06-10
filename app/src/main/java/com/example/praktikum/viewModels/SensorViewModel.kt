@@ -7,4 +7,5 @@ abstract class SensorViewModel: ViewModel() {
     abstract val positionStates: MutableList<MutableState<Float>>
     abstract val checked: MutableState<Boolean>
     abstract val samplingRate: MutableState<Float>
+    abstract val otherStates: MutableList<MutableState<Float>>?
 }

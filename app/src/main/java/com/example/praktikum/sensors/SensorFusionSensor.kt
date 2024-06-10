@@ -5,10 +5,15 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.lifecycle.viewmodel.compose.viewModel
+import android.util.Log
 import com.example.praktikum.data.SensorData
 import com.example.praktikum.data.SensorFusionMeasuringPoint
+import com.example.praktikum.data.TransportationModeRawData
+import com.example.praktikum.data.TransportationRawDataPoint
 import com.example.praktikum.viewModels.SensorViewModel
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 object SensorFusionSensor: AbstractSensor() {
     var sensorManager: SensorManager? = null
@@ -18,6 +23,7 @@ object SensorFusionSensor: AbstractSensor() {
     var sensorEventListenerStepCounter: SensorEventListener? = null
     var viewModel: SensorViewModel? = null
 
+    var counter = 0
 
     override fun startListening(ctx: Context, samplingRate: Int) {
         if(this.sensorManager == null) {
@@ -46,9 +52,26 @@ object SensorFusionSensor: AbstractSensor() {
                                 viewModel!!.positionStates.getOrNull(6)!!.value,
                                 viewModel!!.positionStates.getOrNull(7)!!.value,
                                 viewModel!!.positionStates.getOrNull(8)!!.value,
-                                viewModel!!.positionStates.getOrNull(9  )!!.value,
+                                viewModel!!.positionStates.getOrNull(9)!!.value,
                             )
                         )
+
+                        TransportationModeRawData.TransportationDataList.add(
+                            TransportationRawDataPoint(
+                                viewModel!!.positionStates.getOrNull(3)!!.value,
+                                viewModel!!.positionStates.getOrNull(4)!!.value,
+                                viewModel!!.positionStates.getOrNull(5)!!.value,
+                                viewModel!!.positionStates.getOrNull(9)!!.value,
+                            )
+                        )
+
+                        counter++
+                        if(counter == 1000) {
+                            calculateFeatures(TransportationModeRawData.TransportationDataList, viewModel!!
+                            )
+                            counter = 0
+                            TransportationModeRawData.TransportationDataList.clear()
+                        }
                     }
                 }
             }
@@ -118,5 +141,35 @@ object SensorFusionSensor: AbstractSensor() {
         this.sensorEventListenerStepCounter = null
         this.sensorManager = null
         SensorData.sensorFusionDataList.clear()
+        TransportationModeRawData.TransportationDataList.clear()
     }
 }
+
+fun calculateFeatures(window: MutableList<TransportationRawDataPoint>, viewModel: SensorViewModel) {
+    // Gyroscope
+    val gyroMagnitude = window.map { sqrt(it.posX * it.posX + it.posY * it.posY + it.posZ * it.posZ) }
+    val meanGyro = gyroMagnitude.average().toFloat()
+    val stdGyro = gyroMagnitude.map { (it - meanGyro).pow(2) }.average().let { sqrt(it).toFloat() }
+    val varGyro = stdGyro.pow(2)
+    val maxGyro = gyroMagnitude.maxOrNull() ?: 0.0f
+    val minGyro = gyroMagnitude.minOrNull() ?: 0.0f
+    val smaGyro = gyroMagnitude.sumByDouble { abs(it).toDouble() } / window.size.toFloat()
+
+    // Steps
+    val stepCounts = window.map { it.steps }
+    val stepsMin = stepCounts.minOrNull() ?: 0.0f
+    val stepsMax = stepCounts.maxOrNull() ?: 0.0f
+    val stepsDifference = abs(stepsMin - stepsMax)
+
+    viewModel.otherStates?.getOrNull(0)?.value = meanGyro
+    viewModel.otherStates?.getOrNull(1)?.value = stdGyro
+    viewModel.otherStates?.getOrNull(3)?.value = maxGyro
+    viewModel.otherStates?.getOrNull(4)?.value = minGyro
+    viewModel.otherStates?.getOrNull(5)?.value = smaGyro.toFloat()
+    viewModel.otherStates?.getOrNull(6)?.value = stepsDifference
+
+    // Logge die berechneten Merkmale
+    Log.d("StatisticalFeatures", "Mean Gyro: ${viewModel.otherStates?.get(0)?.value}, Std Gyro: ${viewModel.otherStates?.get(1)?.value}, Var Gyro: ${viewModel.otherStates?.get(2)?.value}, Max Gyro: ${viewModel.otherStates?.get(3)?.value}, Min Gyro: ${viewModel.otherStates?.get(4)?.value}, SMA Gyro: ${viewModel.otherStates?.get(5)?.value}")
+    Log.d("StatisticalFeatures", "Steps Difference: ${viewModel.otherStates?.get(6)?.value}")
+}
+

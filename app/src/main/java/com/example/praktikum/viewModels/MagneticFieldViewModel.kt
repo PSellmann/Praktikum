@@ -12,4 +12,6 @@ class MagneticFieldViewModel: SensorViewModel() {
     override val checked = mutableStateOf(false)
 
     override val samplingRate = mutableStateOf(3.0F)
+
+    override val otherStates = null
 }

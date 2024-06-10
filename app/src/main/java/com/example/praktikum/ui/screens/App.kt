@@ -119,7 +119,7 @@ fun App() {
 
             composable(route = Screens.HAR_TMD.name) {
                 HAR_TMD(
-                    sensorFusionViewModel = sensorFusionViewModel
+                    viewModel = sensorFusionViewModel
                 )
             }
         }

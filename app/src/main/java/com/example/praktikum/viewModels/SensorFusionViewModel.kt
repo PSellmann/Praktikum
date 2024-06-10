@@ -19,4 +19,14 @@ class SensorFusionViewModel: SensorViewModel() {
     override val checked = mutableStateOf(false)
 
     override val samplingRate = mutableStateOf(3.0F)
+
+    override val otherStates = mutableListOf(
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+        mutableStateOf(0.0f),
+    )
 }
