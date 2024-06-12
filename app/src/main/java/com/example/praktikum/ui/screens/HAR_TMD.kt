@@ -81,45 +81,57 @@ fun HAR_TMD(
 object WekaClassifier {
     fun classify(i: Array<MutableState<Float>?>): Double {
         var p = Double.NaN
-        when {
-            i[6]?.value!! <= 0.0 -> {
-                when {
-                    i[4]?.value!! <= 0.2512850311922487 -> p = 1.0
-                    i[4]?.value!! > 0.2512850311922487 -> p = 0.0
-                }
+
+        if (i[6]?.value == null) {
+            p = 1.0
+        } else if (i[6]?.value!! <= 0.0) {
+            if (i[4]?.value == null) {
+                p = 1.0
+            } else if (i[4]?.value!! <= 0.251285) {
+                p = 1.0
+            } else if (i[4]?.value!! > 0.251285) {
+                p = 0.0
             }
-            i[6]?.value!! > 0.0 -> {
-                when {
-                    i[0]?.value!! <= 1.9630081722820396 -> {
-                        when {
-                            i[6]?.value!! <= 4.0 -> p = 0.0
-                            i[6]?.value!! > 4.0 -> p = 2.0
-                        }
+        } else if (i[6]?.value!! > 0.0) {
+            if (i[0]?.value == null) {
+                p = 0.0
+            } else if (i[0]?.value!! <= 1.963008) {
+                if (i[6]?.value == null) {
+                    p = 0.0
+                } else if (i[6]?.value!! <= 4.0) {
+                    p = 0.0
+                } else if (i[6]?.value!! > 4.0) {
+                    p = 2.0
+                }
+            } else if (i[0]?.value!! > 1.963008) {
+                if (i[6]?.value == null) {
+                    p = 0.0
+                } else if (i[6]?.value!! <= 3.0) {
+                    if (i[1]?.value == null) {
+                        p = 0.0
+                    } else if (i[1]?.value!! <= 1.241613) {
+                        p = 0.0
+                    } else if (i[1]?.value!! > 1.241613) {
+                        p = 2.0
                     }
-                    i[0]?.value!! > 1.9630081722820396 -> {
-                        when {
-                            i[6]?.value!! <= 3.0 -> {
-                                when {
-                                    i[1]?.value!! <= 1.2416131355148738 -> p = 0.0
-                                    i[1]?.value!! > 1.2416131355148738 -> p = 2.0
-                                }
-                            }
-                            i[6]?.value!! > 3.0 -> {
-                                when {
-                                    i[1]?.value!! <= 1.5782680578184118 -> p = 2.0
-                                    i[1]?.value!! > 1.5782680578184118 -> {
-                                        when {
-                                            i[0]?.value!! <= 2.799087379959929 -> p = 0.0
-                                            i[0]?.value!! > 2.799087379959929 -> p = 2.0
-                                        }
-                                    }
-                                }
-                            }
+                } else if (i[6]?.value!! > 3.0) {
+                    if (i[1]?.value == null) {
+                        p = 2.0
+                    } else if (i[1]?.value!! <= 1.578268) {
+                        p = 2.0
+                    } else if (i[1]?.value!! > 1.578268) {
+                        if (i[0]?.value == null) {
+                            p = 0.0
+                        } else if (i[0]?.value!! <= 2.799087) {
+                            p = 0.0
+                        } else if (i[0]?.value!! > 2.799087) {
+                            p = 2.0
                         }
                     }
                 }
             }
         }
+
         return p
     }
 }
